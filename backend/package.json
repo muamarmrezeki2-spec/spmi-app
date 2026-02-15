@@ -14,7 +14,8 @@
     "migration:revert": "npm run typeorm -- migration:revert -d ormconfig.ts",
     "migration:show": "npm run typeorm -- migration:show -d ormconfig.ts",
     "schema:sync": "npm run typeorm -- schema:sync -d ormconfig.ts",
-    "schema:drop": "npm run typeorm -- schema:drop -d ormconfig.ts"
+    "schema:drop": "npm run typeorm -- schema:drop -d ormconfig.ts",
+    "seed": "ts-node src/seeds/seed.ts"
   },
   "dependencies": {
     "@nestjs/common": "^10.2.0",
@@ -30,6 +31,7 @@
   },
   "devDependencies": {
     "@nestjs/cli": "^10.2.0",
-    "@types/node": "^20.4.5"
+    "@types/node": "^20.4.5",
+    "ts-node": "^10.9.2"
   }
 }
