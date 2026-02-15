@@ -1,6 +1,7 @@
 import 'reflect-metadata';
 import 'dotenv/config';
 import { DataSource } from 'typeorm';
+import * as bcrypt from 'bcrypt';
 import {
   User,
   UserRole,
@@ -21,6 +22,11 @@ const AppDataSource = new DataSource({
   synchronize: false,
   logging: true,
 });
+
+async function hashPassword(password: string): Promise<string> {
+  const saltRounds = 10;
+  return await bcrypt.hash(password, saltRounds);
+}
 
 async function seed() {
   try {
@@ -46,35 +52,35 @@ async function seed() {
     const users = [
       {
         email: 'admin@spmi.ac.id',
-        password: 'admin123', // In production, this should be hashed
+        password: await hashPassword('admin123'),
         name: 'Super Admin',
         phone: '08123456789',
         role: UserRole.SUPER_ADMIN,
       },
       {
         email: 'lpm@spmi.ac.id',
-        password: 'lpm123',
+        password: await hashPassword('lpm123'),
         name: 'LPM Coordinator',
         phone: '08123456790',
         role: UserRole.LPM,
       },
       {
         email: 'auditor@spmi.ac.id',
-        password: 'auditor123',
+        password: await hashPassword('auditor123'),
         name: 'Internal Auditor',
         phone: '08123456791',
         role: UserRole.AUDITOR,
       },
       {
         email: 'prodi@spmi.ac.id',
-        password: 'prodi123',
+        password: await hashPassword('prodi123'),
         name: 'Prodi Manager',
         phone: '08123456792',
         role: UserRole.PRODI_UNIT,
       },
       {
         email: 'pimpinan@spmi.ac.id',
-        password: 'pimpinan123',
+        password: await hashPassword('pimpinan123'),
         name: 'University Leadership',
         phone: '08123456793',
         role: UserRole.PIMPINAN,
@@ -220,7 +226,7 @@ async function seed() {
     console.log('  Auditor: auditor@spmi.ac.id / auditor123');
     console.log('  Prodi: prodi@spmi.ac.id / prodi123');
     console.log('  Pimpinan: pimpinan@spmi.ac.id / pimpinan123');
-    console.log('\n⚠️  Remember to hash passwords in production!');
+    console.log('\n✅ All passwords are securely hashed using bcrypt');
 
     await AppDataSource.destroy();
   } catch (error) {
